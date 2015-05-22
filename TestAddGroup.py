@@ -19,6 +19,7 @@ class TestAddGroup(unittest.TestCase):
         wd.get("http://localhost/addressbook/")
 
     def login(self, wd, username, password):
+        self.open_home_page(wd)
         wd.find_element_by_name("user").click()
         wd.find_element_by_name("user").clear()
         wd.find_element_by_name("user").send_keys(username)
@@ -31,6 +32,7 @@ class TestAddGroup(unittest.TestCase):
         wd.find_element_by_link_text("groups").click()
 
     def create_group(self, wd, group):
+        self.open_groups_page(wd)
         # init group creation
         wd.find_element_by_name("new").click()
         # fill group firm
@@ -54,20 +56,14 @@ class TestAddGroup(unittest.TestCase):
 
     def test_TestAddGroup(self):
         wd = self.wd
-        self.open_home_page(wd)
         self.login(wd, username="admin", password="secret")
-        self.open_groups_page(wd)
         self.create_group(wd, Group(name="Group1", header="Common_Croup", footer="for all"))
-        self.return_to_groups_page(wd)
         self.logout(wd)
 
     def test_TestAddEmptyGroup(self):
         wd = self.wd
-        self.open_home_page(wd)
         self.login(wd, username="admin", password="secret")
-        self.open_groups_page(wd)
         self.create_group(wd, Group(name="", header="", footer=""))
-        self.return_to_groups_page(wd)
         self.logout(wd)
 
     def tearDown(self):
