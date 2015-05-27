@@ -23,6 +23,13 @@ class ContactHelper:
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         wd.switch_to_alert().accept()
 
+    def delete_first_contact_edit(self):
+        wd = self.app.wd
+        # init contact editing
+        wd.find_element_by_xpath("//table[@id='maintable']/tbody/tr[2]/td[8]/a/img").click()
+        # submit deletion
+        wd.find_element_by_xpath("//input[@value='Delete']").click()
+
     def fill_contact_form(self, contact):
         wd = self.app.wd
         wd.find_element_by_name("firstname").click()
