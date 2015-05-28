@@ -22,33 +22,33 @@ class GroupHelper:
         wd.find_element_by_name("group_footer").clear()
         wd.find_element_by_name("group_footer").send_keys(group.footer)
 
-    def create(self, group, locator_button_new):
+    def create(self, group):
         wd = self.app.wd
         self.open_groups_page()
         # init group creation
-        wd.find_element_by_xpath(locator_button_new).click()
+        wd.find_element_by_xpath("//*[@id='content']//*[@name='new'][1]").click()
         # fill group form
         self.fill_group_form(group)
         # submit group creation
         wd.find_element_by_name("submit").click()
         self.return_to_groups_page()
 
-    def delete_first_group(self, locator_button_delete):
+    def delete_first_group(self):
         wd = self.app.wd
         self.open_groups_page()
         # select first group
         wd.find_element_by_name("selected[]").click()
         # submit deletion
-        wd.find_element_by_xpath(locator_button_delete).click()
+        wd.find_element_by_xpath("//*[@id='content']//*[@name='delete'][1]").click()
         self.return_to_groups_page()
 
-    def edit_first_group(self, group, locator_button_edit):
+    def edit_first_group(self, group):
         wd = self.app.wd
         self.open_groups_page()
         # select first group
         wd.find_element_by_name("selected[]").click()
         # init group editing
-        wd.find_element_by_xpath(locator_button_edit).click()
+        wd.find_element_by_xpath("//*[@id='content']//*[@name='edit'][1]").click()
         # edit group form
         self.fill_group_form(group)
         # submit group editing

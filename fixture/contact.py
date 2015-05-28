@@ -66,11 +66,11 @@ class ContactHelper:
         wd.find_element_by_name("homepage").clear()
         wd.find_element_by_name("homepage").send_keys(contact.homepage)
 
-    def edit_first_contact(self, contact, locator_button_update):
+    def edit_first_contact(self, contact):
         wd = self.app.wd
         # init contact editing
         wd.find_element_by_xpath("//table[@id='maintable']/tbody/tr[2]/td[8]/a/img").click()
          # fill contact form
         self.fill_contact_form(contact)
          # submit contact creation
-        wd.find_element_by_xpath(locator_button_update).click()
+        wd.find_element_by_xpath("//*[@id='content']/form[1]/input[1]").click()
