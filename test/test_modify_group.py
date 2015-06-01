@@ -8,3 +8,4 @@ def test_modify_group_name(app):
 
 def test_modify_group_headr(app):
     app.group.modify_first_group(Group(header="Common_Croup_new"))
+
