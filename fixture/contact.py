@@ -8,7 +8,8 @@ class ContactHelper:
 
     def open_home_page(self):
         wd = self.app.wd
-        wd.find_element_by_link_text("home").click()
+        if not(wd.current_url.endswith("/addressbook/") and len(wd.find_elements_by_id("maintable"))>0):
+            wd.find_element_by_link_text("home").click()
 
     def add_new(self, contact):
         wd = self.app.wd
