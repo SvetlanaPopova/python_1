@@ -1,4 +1,5 @@
 __author__ = 'User'
+from model.contact import Contact
 
 
 class ContactHelper:
@@ -72,3 +73,18 @@ class ContactHelper:
         wd = self.app.wd
         self.open_home_page()
         return len(wd.find_elements_by_name("selected[]"))
+
+    def get_contact_list(self):
+        wd = self.app.wd
+        self.open_home_page()
+        contacts = []
+        IndRow = 2 # row index
+        for element in wd.find_elements_by_name("entry"):
+            text = []
+            for IndClm in range(2,4): # IndClm - column index; 2 - Last name, 3 - First name
+                # text:[0] - Last name, [1] - First name
+                text.append(wd.find_element_by_xpath("//*[@id='maintable']/tbody/tr["+str(IndRow)+"]/td["+str(IndClm)+"]").text)
+            id = element.find_element_by_name("selected[]").get_attribute("value")
+            contacts.append(Contact(firstname=text[1], lastname=text[0], id=id))
+            IndRow = IndRow + 1
+        return contacts
