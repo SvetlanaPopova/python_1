@@ -93,3 +93,21 @@ class GroupHelper:
                 id = element.find_element_by_name("selected[]").get_attribute("value")
                 self.group_cash.append(Group(name=text, id=id))
         return list(self.group_cash)
+
+    def check_add_group_success(self, group, old_groups):
+        assert len(old_groups) + 1 == self.count()
+        new_groups = self.get_group_list()
+        old_groups.append(group)
+        assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)
+
+    def check_delete_success(self, index, old_groups):
+        assert len(old_groups) - 1 == self.count()
+        new_groups = self.get_group_list()
+        old_groups[index:index + 1] = []
+        assert len(old_groups) == len(new_groups)
+
+    def check_modify_success(self, group, index, old_groups):
+        assert len(old_groups) == self.count()
+        new_groups = self.get_group_list()
+        old_groups[index] = group
+        assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)

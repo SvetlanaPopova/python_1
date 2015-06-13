@@ -94,6 +94,22 @@ class ContactHelper:
 
     contact_cash = None
 
+    #def get_contact_list(self):
+        #if self.contact_cash is None:
+            #wd = self.app.wd
+            #self.open_home_page()
+            #self.contact_cash = []
+            #for row in wd.find_elements_by_name("entry"):
+                #contact_data = []
+                #for column in row.find_elements_by_xpath("//td"):
+                    #if len(column.find_elements_by_name("selected[]")) > 0:
+                        #contact_data.append(column.find_element_by_name("selected[]").get_attribute("value")) #id
+                    #else:
+                        #contact_data.append(column.text)
+            #self.contact_cash.append(Contact(firstname=contact_data[2], lastname=contact_data[1], id=contact_data[0]))
+        #return list(self.contact_cash)
+
+
     def get_contact_list(self):
         if self.contact_cash is None:
             wd = self.app.wd
@@ -101,11 +117,32 @@ class ContactHelper:
             self.contact_cash = []
             IndRow = 2 # row index
             for element in wd.find_elements_by_name("entry"):
-                text = []
+                contact_data = []
                 for IndClm in range(2,4): # IndClm - column index; 2 - Last name, 3 - First name
-                    # text:[0] - Last name, [1] - First name
-                    text.append(wd.find_element_by_xpath("//*[@id='maintable']/tbody/tr["+str(IndRow)+"]/td["+str(IndClm)+"]").text)
+                # text:[0] - Last name, [1] - First name
+                    contact_data.append(wd.find_element_by_xpath("//*[@id='maintable']/tbody/tr["+str(IndRow)+"]/td["+str(IndClm)+"]").text)
                 id = element.find_element_by_name("selected[]").get_attribute("value")
-                self.contact_cash.append(Contact(firstname=text[1], lastname=text[0], id=id))
                 IndRow = IndRow + 1
+                self.contact_cash.append(Contact(firstname=contact_data[1], lastname=contact_data[0], id=id))
         return list(self.contact_cash)
+
+    def compare_contact_lists(self, new_contacts, old_contacts):
+        assert sorted(old_contacts, key=Contact.id_or_max) == sorted(new_contacts, key=Contact.id_or_max)
+
+    def check_add_new_success(self, contact, old_contacts):
+        assert len(old_contacts) + 1 == self.count()
+        new_contacts = self.get_contact_list()
+        old_contacts.append(contact)
+        self.compare_contact_lists(new_contacts, old_contacts)
+
+    def check_delete_success(self, index, old_contacts):
+        assert len(old_contacts) - 1 == self.count()
+        new_contacts = self.get_contact_list()
+        old_contacts[index:index + 1] = []
+        assert sorted(old_contacts, key=Contact.id_or_max) == sorted(new_contacts, key=Contact.id_or_max)
+
+    def check_modify_success(self, contact, index, old_contacts):
+        assert len(old_contacts) == self.count()
+        new_contacts = self.get_contact_list()
+        old_contacts[index].firstname = contact.firstname
+        assert sorted(old_contacts, key=Contact.id_or_max) == sorted(new_contacts, key=Contact.id_or_max)
