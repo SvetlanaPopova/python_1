@@ -1,5 +1,6 @@
 __author__ = 'User'
 from sys import maxsize
+import re
 
 
 class Contact:
