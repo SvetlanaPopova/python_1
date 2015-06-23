@@ -2,19 +2,20 @@ __author__ = 'User'
 from model.contact import Contact
 import re
 
+
 class ContactHelper:
     
     def __init__(self, app):
         self.app = app
 
-    #def open_home_page(self):
-        #wd = self.app.wd
-        #if not(wd.current_url.endswith("/addressbook/") and len(wd.find_elements_by_id("maintable"))>0):
-            #wd.find_element_by_link_text("home").click()
+    def open_home_page(self):
+        wd = self.app.wd
+        if not(wd.current_url.endswith("/addressbook/") and len(wd.find_elements_by_id("maintable"))>0):
+            wd.find_element_by_link_text("home").click()
 
     def add_new(self, contact):
         wd = self.app.wd
-        self.app.open_home_page()
+        self.open_home_page()
         # init contact creation
         wd.find_element_by_link_text("add new").click()
         # fill contact form
@@ -32,7 +33,7 @@ class ContactHelper:
 
     def delete_contact_by_index(self, index):
         wd = self.app.wd
-        self.app.open_home_page()
+        self.open_home_page()
         self.select_contact_by_index(index)
         # submit deletion
         wd.find_element_by_xpath("//input[@value='Delete']").click()
@@ -44,14 +45,14 @@ class ContactHelper:
 
     def open_contact_to_edit_by_index(self, index):
         wd = self.app.wd
-        self.app.open_home_page()
+        self.open_home_page()
         row = wd.find_elements_by_name("entry")[index]
         cell = row.find_elements_by_tag_name("td")[7]
         cell.find_element_by_tag_name("a").click()
 
     def open_contact_view_by_index(self, index):
         wd = self.app.wd
-        self.app.open_home_page()
+        self.open_home_page()
         row = wd.find_elements_by_name("entry")[index]
         cell = row.find_elements_by_tag_name("td")[6]
         cell.find_element_by_tag_name("a").click()
@@ -98,7 +99,7 @@ class ContactHelper:
 
     def count(self):
         wd = self.app.wd
-        self.app.open_home_page()
+        #self.app.open_home_page()
         return len(wd.find_elements_by_name("selected[]"))
 
     contact_cash = None
@@ -106,17 +107,18 @@ class ContactHelper:
     def get_contact_list(self):
         if self.contact_cash is None:
             wd = self.app.wd
-            self.app.open_home_page()
+            self.open_home_page()
             self.contact_cash = []
             for row in wd.find_elements_by_name("entry"):
                 cells = row.find_elements_by_tag_name("td")
                 firstname = cells[2].text
                 lastname = cells[1].text
+                address = cells[3].text
                 id = cells[0].find_element_by_tag_name("input").get_attribute("value")
-                all_phones = cells[5].text.splitlines()
-                self.contact_cash.append(Contact(firstname=firstname, lastname=lastname, id=id,
-                                                 homephone=all_phones[0], mobilephone=all_phones[1],
-                                                 workphone=all_phones[2], secondaryphone=all_phones[3]))
+                all_emails = cells[4].text
+                all_phones = cells[5].text
+                self.contact_cash.append(Contact(firstname=firstname, lastname=lastname, id=id, all_phones_from_home_page=all_phones,
+                                                 all_emails_from_home_page=all_emails, address=address))
         return list(self.contact_cash)
 
     def compare_contact_lists(self, new_contacts, old_contacts):
@@ -125,6 +127,7 @@ class ContactHelper:
 
     def check_add_new_success(self, contact, old_contacts):
         wd = self.app.wd
+        self.open_home_page()
         assert len(old_contacts) + 1 == self.count()
         new_contacts = self.get_contact_list()
         old_contacts.append(contact)
@@ -132,6 +135,7 @@ class ContactHelper:
 
     def check_delete_success(self, index, old_contacts):
         wd = self.app.wd
+        self.open_home_page()
         assert len(old_contacts) - 1 == self.count()
         new_contacts = self.get_contact_list()
         old_contacts[index:index + 1] = []
@@ -139,6 +143,7 @@ class ContactHelper:
 
     def check_modify_success(self, contact, index, old_contacts):
         wd = self.app.wd
+        self.open_home_page()
         assert len(old_contacts) == self.count()
         new_contacts = self.get_contact_list()
         old_contacts[index].firstname = contact.firstname
@@ -146,17 +151,22 @@ class ContactHelper:
 
     def get_contact_info_from_edit_page(self,index):
         wd = self.app.wd
-        self.app.open_home_page()
+        #self.app.open_home_page()
         self.open_contact_to_edit_by_index(index)
-        firstname = wd.find_element_by_name("firstname ").get_attribute("value")
+        firstname = wd.find_element_by_name("firstname").get_attribute("value")
         lastname = wd.find_element_by_name("lastname").get_attribute("value")
+        address = wd.find_element_by_name("address").get_attribute("value")
         id = wd.find_element_by_name("id").get_attribute("value")
+        email_1 = wd.find_element_by_name("email").get_attribute("value")
+        email_2 = wd.find_element_by_name("email2").get_attribute("value")
+        email_3 = wd.find_element_by_name("email3").get_attribute("value")
         homephone = wd.find_element_by_name("home").get_attribute("value")
         workhome = wd.find_element_by_name("work").get_attribute("value")
         mobilephone = wd.find_element_by_name("mobile").get_attribute("value")
         secondaryphone = wd.find_element_by_name("phone2").get_attribute("value")
         return Contact(firstname=firstname, lastname=lastname, id=id, homephone=homephone, workphone=workhome,
-                       mobilephone=mobilephone, secondaryphone=secondaryphone)
+                       mobilephone=mobilephone, secondaryphone=secondaryphone, address=address,
+                       email_1=email_1, email_2=email_2, email_3=email_3)
 
     def get_contact_info_from_view_page(self,index):
         wd = self.app.wd
