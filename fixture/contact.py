@@ -3,6 +3,10 @@ from model.contact import Contact
 import re
 
 
+def clear(s):
+        return re.sub("[ ]","",s)
+
+
 class ContactHelper:
     
     def __init__(self, app):
@@ -123,7 +127,14 @@ class ContactHelper:
 
     def compare_contact_lists(self, new_contacts, old_contacts):
         wd = self.app.wd
-        assert sorted(old_contacts, key=Contact.id_or_max) == sorted(new_contacts, key=Contact.id_or_max)
+        old_contacts_without_space = list(map(lambda contact: Contact(id=contact.id, firstname=clear(contact.firstname),
+                                                                      lastname=clear(contact.lastname),
+                                                                      address=clear(contact.address)), old_contacts))
+        new_contacts_without_space = list(map(lambda contact: Contact(id=contact.id, firstname=clear(contact.firstname),
+                                                                      lastname=clear(contact.lastname),
+                                                                      address=clear(contact.address)), new_contacts))
+        assert sorted(old_contacts_without_space, key=Contact.id_or_max) == \
+               sorted(new_contacts_without_space, key=Contact.id_or_max)
 
     def check_add_new_success(self, contact, old_contacts):
         wd = self.app.wd
