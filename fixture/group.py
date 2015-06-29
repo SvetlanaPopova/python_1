@@ -1,5 +1,10 @@
 __author__ = 'User'
 from model.group import Group
+import re
+
+
+def clean(group):
+    return Group(id=group.id, name=group.name.strip())
 
 
 class GroupHelper:
@@ -98,7 +103,7 @@ class GroupHelper:
         assert len(old_groups) + 1 == self.count()
         new_groups = self.get_group_list()
         old_groups.append(group)
-        assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)
+        self.compare_group_lists(new_groups, old_groups)
 
     def check_delete_success(self, index, old_groups):
         assert len(old_groups) - 1 == self.count()
@@ -106,8 +111,13 @@ class GroupHelper:
         old_groups[index:index + 1] = []
         assert len(old_groups) == len(new_groups)
 
+    def compare_group_lists(self, new_groups, old_groups):
+        old_groups_without_space = list(map(clean, old_groups))
+        new_groups_without_space = list(map(clean, new_groups))
+        assert sorted(old_groups_without_space, key=Group.id_or_max) == sorted(new_groups_without_space, key=Group.id_or_max)
+
     def check_modify_success(self, group, index, old_groups):
         assert len(old_groups) == self.count()
         new_groups = self.get_group_list()
         old_groups[index] = group
-        assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)
+        self.compare_group_lists(new_groups, old_groups)
