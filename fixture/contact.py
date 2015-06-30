@@ -1,10 +1,11 @@
 __author__ = 'User'
 from model.contact import Contact
-import re
 
 
-def clear(s):
-        return re.sub("[ ]","",s)
+
+def clean(contact):
+    return Contact(id=contact.id, firstname=contact.firstname.strip(),
+                   lastname=contact.lastname.strip(), address=contact.address.strip())
 
 
 class ContactHelper:
@@ -127,20 +128,15 @@ class ContactHelper:
 
     def compare_contact_lists(self, new_contacts, old_contacts):
         wd = self.app.wd
-        old_contacts_without_space = list(map(lambda contact: Contact(id=contact.id, firstname=clear(contact.firstname),
-                                                                      lastname=clear(contact.lastname),
-                                                                      address=clear(contact.address)), old_contacts))
-        new_contacts_without_space = list(map(lambda contact: Contact(id=contact.id, firstname=clear(contact.firstname),
-                                                                      lastname=clear(contact.lastname),
-                                                                      address=clear(contact.address)), new_contacts))
+        old_contacts_without_space = list(map(clean, old_contacts))
+        new_contacts_without_space = list(map(clean, new_contacts))
         assert sorted(old_contacts_without_space, key=Contact.id_or_max) == \
                sorted(new_contacts_without_space, key=Contact.id_or_max)
 
-    def check_add_new_success(self, contact, old_contacts):
+    def check_add_new_success(self, db, contact, old_contacts):
         wd = self.app.wd
         self.open_home_page()
-        assert len(old_contacts) + 1 == self.count()
-        new_contacts = self.get_contact_list()
+        new_contacts = db.get_contact_list()
         old_contacts.append(contact)
         self.compare_contact_lists(new_contacts, old_contacts)
 

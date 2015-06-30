@@ -1,18 +1,19 @@
 __author__ = 'User'
 
 from model.group import Group
-from random import randrange
+import random
 
 
-def test_modify_group_name(app):
+def test_modify_group_name(app, db, check_ui):
     if app.group.count() == 0:
         app.group.create(Group(name="TestGroupName"))
-    old_groups = app.group.get_group_list()
-    index = randrange(len(old_groups))
-    group = Group(name="GroupNew")
-    group.id = old_groups[index].id
-    app.group.modify_group_by_index(index, group)
-    app.group.check_modify_success(group, index, old_groups)
+    old_groups = db.get_group_list()
+    old_group = random.choice(old_groups)
+    group = Group(name="ModifyGroup")
+    group.id = old_group.id
+    old_groups.remove(old_group)
+    app.group.modify_group_by_id(group)
+    app.group.check_add_or_modify_success(db, group, old_groups, check_ui)
 
 
 #def test_modify_group_headr(app):

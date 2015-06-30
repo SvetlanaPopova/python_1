@@ -1,6 +1,5 @@
 __author__ = 'User'
 from model.group import Group
-import re
 
 
 def clean(group):
@@ -54,12 +53,25 @@ class GroupHelper:
         self.return_to_groups_page()
         self.group_cash = None
 
+    def delete_group_by_id(self, id):
+        wd = self.app.wd
+        self.open_groups_page()
+        self.select_group_by_id(id)
+        # submit deletion
+        wd.find_element_by_xpath("//*[@id='content']//*[@name='delete'][1]").click()
+        self.return_to_groups_page()
+        self.group_cash = None
+
     def select_first_group(self):
         self.select_group_by_index(0)
 
     def select_group_by_index(self, index):
         wd = self.app.wd
         wd.find_elements_by_name("selected[]")[index].click()
+
+    def select_group_by_id(self, id):
+        wd = self.app.wd
+        wd.find_element_by_css_selector("input[value='%s']" % id).click()
 
     def modify_first_group(self, new_group_data):
         self.modify_group_by_index(0, new_group_data)
@@ -72,6 +84,19 @@ class GroupHelper:
         wd.find_element_by_xpath("//*[@id='content']//*[@name='edit'][1]").click()
         # fill group form
         self.fill_group_form(new_group_data)
+        # submit modification
+        wd.find_element_by_name("update").click()
+        self.return_to_groups_page()
+        self.group_cash = None
+
+    def modify_group_by_id(self, group):
+        wd = self.app.wd
+        self.open_groups_page()
+        self.select_group_by_id(group.id)
+        # open modification group
+        wd.find_element_by_xpath("//*[@id='content']//*[@name='edit'][1]").click()
+        # fill group form
+        self.fill_group_form(group)
         # submit modification
         wd.find_element_by_name("update").click()
         self.return_to_groups_page()
@@ -99,25 +124,18 @@ class GroupHelper:
                 self.group_cash.append(Group(name=text, id=id))
         return list(self.group_cash)
 
-    def check_add_group_success(self, group, old_groups):
-        assert len(old_groups) + 1 == self.count()
-        new_groups = self.get_group_list()
+    def check_add_or_modify_success(self, db, group, old_groups, check_ui):
+        new_groups = db.get_group_list()
         old_groups.append(group)
-        self.compare_group_lists(new_groups, old_groups)
+        self.compare_group_lists(new_groups, old_groups, check_ui)
 
-    def check_delete_success(self, index, old_groups):
-        assert len(old_groups) - 1 == self.count()
-        new_groups = self.get_group_list()
-        old_groups[index:index + 1] = []
-        assert len(old_groups) == len(new_groups)
+    def check_delete_success(self, db, group, old_groups, check_ui):
+        new_groups = db.get_group_list()
+        old_groups.remove(group)
+        self.compare_group_lists(new_groups, old_groups, check_ui)
 
-    def compare_group_lists(self, new_groups, old_groups):
-        old_groups_without_space = list(map(clean, old_groups))
-        new_groups_without_space = list(map(clean, new_groups))
-        assert sorted(old_groups_without_space, key=Group.id_or_max) == sorted(new_groups_without_space, key=Group.id_or_max)
-
-    def check_modify_success(self, group, index, old_groups):
-        assert len(old_groups) == self.count()
-        new_groups = self.get_group_list()
-        old_groups[index] = group
-        self.compare_group_lists(new_groups, old_groups)
+    def compare_group_lists(self, new_groups, old_groups, check_ui):
+        assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)
+        if check_ui:
+            assert sorted(list(map(clean, new_groups)), key=Group.id_or_max) == \
+                   sorted(list(map(clean, self.get_group_list())), key=Group.id_or_max)
