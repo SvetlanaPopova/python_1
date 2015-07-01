@@ -30,12 +30,12 @@ class Dbfixture:
         cursor = self.connection.cursor()
         try:
             cursor.execute("select id, firstname, lastname, nickname, title, company, address, "
-                           "home, mobile, work, fax, email, email2, email3, homepage, phone2, deprecated from addressbook")
+                           "home, mobile, work, fax, email, email2, email3, homepage, phone2 "
+                           "from addressbook where deprecated='0000-00-00 00:00:00'")
             for row in cursor:
                 (id, firstname, lastname, nickname, title, company, address, homephone, mobilephone, workphone,
-                 fax, email_1, email_2, email_3, homepage, secondaryphone, deprecated) = row
-                if deprecated is None:
-                    list.append(Contact(id=str(id), firstname=firstname, lastname=lastname, nickname=nickname, title=title,
+                 fax, email_1, email_2, email_3, homepage, secondaryphone) = row
+                list.append(Contact(id=str(id), firstname=firstname, lastname=lastname, nickname=nickname, title=title,
                                     company=company, address=address, homephone=homephone, mobilephone=mobilephone,
                                     workphone=workphone, fax=fax, email_1=email_1, email_2=email_2, email_3=email_3,
                                     homepage=homepage, secondaryphone=secondaryphone))
