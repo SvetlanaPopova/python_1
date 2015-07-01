@@ -12,21 +12,18 @@ def test_check_data_of_some_contact_on_home_page(app):
     assert contact_from_home_page.firstname == contact_from_edit_page.firstname
     assert contact_from_home_page.lastname == contact_from_edit_page.lastname
     assert contact_from_home_page.address == contact_from_edit_page.address
-    assert contact_from_home_page.all_emails_from_home_page == merge_emails_like_on_home_page(contact_from_edit_page)
-    assert contact_from_home_page.all_phones_from_home_page == merge_phones_like_on_home_page(contact_from_edit_page)
+    assert contact_from_home_page.all_emails_from_home_page == app.contact.merge_emails_like_on_home_page(contact_from_edit_page)
+    assert contact_from_home_page.all_phones_from_home_page == app.contact.merge_phones_like_on_home_page(contact_from_edit_page)
 
 
-def clear(s):
-    return re.sub("[() -]","",s)
-
-
-def merge_phones_like_on_home_page(contact):
-    return "\n".join(filter(lambda x: x != "",
-                            map(lambda s: clear(s),
-                                filter(lambda x: x is not None,
-                                       [contact.homephone, contact.mobilephone, contact.workphone, contact.secondaryphone]))))
-
-def merge_emails_like_on_home_page(contact):
-    return "\n".join(filter(lambda x: x != "",
-                            filter(lambda x: x is not None,
-                                       [contact.email_1, contact.email_2, contact.email_3])))
+def test_check_data_of_all_contacts_on_home_page(app, db):
+    db_contacts = db.get_contact_list()
+    home_page_contacts = app.contact.get_contact_list()
+    db_contacts_like_on_home_page = list(map(lambda contact: Contact(id=contact.id, firstname=contact.firstname,
+                                        lastname=contact.lastname, address=contact.address,
+                                        all_phones_from_home_page=app.contact.merge_phones_like_on_home_page(contact),
+                                        homephone=None, workphone=None, mobilephone=None, secondaryphone=None,
+                                        all_emails_from_home_page=app.contact.merge_emails_like_on_home_page(contact),
+                                        email_1=None, email_2=None, email_3=None), db_contacts))
+    assert sorted(list(map(app.contact.clean, home_page_contacts)), key=Contact.id_or_max) == \
+               sorted(list(map(app.contact.clean, db_contacts_like_on_home_page)), key=Contact.id_or_max)

@@ -34,16 +34,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="contact.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/generator/contact.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="278" max-vertical-offset="850">
-              <caret line="41" column="104" selection-start-line="41" selection-start-column="104" selection-end-line="41" selection-end-column="104" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="contacts.json" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/data/contacts.json">
           <provider selected="true" editor-type-id="text-editor">
@@ -57,8 +47,8 @@
       <file leaf-file-name="contact.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/fixture/contact.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="2387" max-vertical-offset="4301">
-              <caret line="103" column="0" selection-start-line="103" selection-start-column="0" selection-end-line="103" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="3152" max-vertical-offset="4301">
+              <caret line="188" column="12" selection-start-line="188" selection-start-column="12" selection-end-line="195" selection-end-column="80" />
               <folding>
                 <element signature="e#20#53#0" expanded="true" />
               </folding>
@@ -66,11 +56,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="db.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="db.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/fixture/db.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3319149" vertical-offset="466" max-vertical-offset="850">
+            <state vertical-scroll-proportion="0.0" vertical-offset="466" max-vertical-offset="850">
               <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test_check_data_of_contacts.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/test/test_check_data_of_contacts.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.5483871" vertical-offset="153" max-vertical-offset="561">
+              <caret line="18" column="4" selection-start-line="18" selection-start-column="4" selection-end-line="18" selection-end-column="48" />
               <folding />
             </state>
           </provider>
@@ -155,7 +155,6 @@
         <option value="$PROJECT_DIR$/fixture/session.py" />
         <option value="$PROJECT_DIR$/test/test_phones.py" />
         <option value="$PROJECT_DIR$/test/test_check_data_for_some_contact.py" />
-        <option value="$PROJECT_DIR$/test/test_check_data_of_contacts.py" />
         <option value="$PROJECT_DIR$/model/group.py" />
         <option value="$PROJECT_DIR$/fixture/application.py" />
         <option value="$PROJECT_DIR$/data/add_group.py" />
@@ -179,6 +178,7 @@
         <option value="$PROJECT_DIR$/data/contacts.json" />
         <option value="$PROJECT_DIR$/check_db_connection.py" />
         <option value="$PROJECT_DIR$/fixture/db.py" />
+        <option value="$PROJECT_DIR$/test/test_check_data_of_contacts.py" />
       </list>
     </option>
   </component>
@@ -326,35 +326,7 @@
       <recent name="C:\RepositoryGit\python_1\model" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.check_db_connection">
-    <configuration default="false" name="py.test in test_modify_contact.py" type="tests" factoryName="py.test" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="python_1" />
-      <option name="SCRIPT_NAME" value="" />
-      <option name="CLASS_NAME" value="" />
-      <option name="METHOD_NAME" value="" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_SCRIPT" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <option name="testToRun" value="$PROJECT_DIR$/test/test_modify_contact.py" />
-      <option name="keywords" value="" />
-      <option name="params" value="--browser=chrome" />
-      <option name="USE_PARAM" value="true" />
-      <option name="USE_KEYWORD" value="false" />
-      <RunnerSettings RunnerId="PyDebugRunner" />
-      <RunnerSettings RunnerId="PythonRunner" />
-      <ConfigurationWrapper RunnerId="PyDebugRunner" />
-      <ConfigurationWrapper RunnerId="PythonRunner" />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="Python tests.py.test in test_check_data_of_all_contacts_on_home_page">
     <configuration default="false" name="py.test in test_add_group.py" type="tests" factoryName="py.test" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -451,6 +423,32 @@
       <RunnerSettings RunnerId="PyDebugRunner" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PyDebugRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="py.test in test_check_data_of_all_contacts_on_home_page" type="tests" factoryName="py.test" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="python_1" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <option name="testToRun" value="$PROJECT_DIR$/test/test_check_data_of_contacts.py" />
+      <option name="keywords" value="test_check_data_of_all_contacts_on_home_page" />
+      <option name="params" value="" />
+      <option name="USE_PARAM" value="false" />
+      <option name="USE_KEYWORD" value="true" />
+      <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
@@ -578,19 +576,19 @@
     </configuration>
     <list size="6">
       <item index="0" class="java.lang.String" itemvalue="Python tests.py.test in test_delete_contact.py" />
-      <item index="1" class="java.lang.String" itemvalue="Python tests.py.test in test_modify_contact.py" />
-      <item index="2" class="java.lang.String" itemvalue="Python tests.py.test in test_add_group.py" />
-      <item index="3" class="java.lang.String" itemvalue="Python tests.py.test in test_delete_group.py" />
-      <item index="4" class="java.lang.String" itemvalue="Python tests.py.test in test_modify_group.py" />
-      <item index="5" class="java.lang.String" itemvalue="Python.check_db_connection" />
+      <item index="1" class="java.lang.String" itemvalue="Python tests.py.test in test_add_group.py" />
+      <item index="2" class="java.lang.String" itemvalue="Python tests.py.test in test_delete_group.py" />
+      <item index="3" class="java.lang.String" itemvalue="Python tests.py.test in test_modify_group.py" />
+      <item index="4" class="java.lang.String" itemvalue="Python.check_db_connection" />
+      <item index="5" class="java.lang.String" itemvalue="Python tests.py.test in test_check_data_of_all_contacts_on_home_page" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.check_db_connection" />
-        <item index="1" class="java.lang.String" itemvalue="Python tests.py.test in test_modify_group.py" />
-        <item index="2" class="java.lang.String" itemvalue="Python tests.py.test in test_delete_group.py" />
-        <item index="3" class="java.lang.String" itemvalue="Python tests.py.test in test_add_group.py" />
-        <item index="4" class="java.lang.String" itemvalue="Python tests.py.test in test_modify_contact.py" />
+        <item index="0" class="java.lang.String" itemvalue="Python tests.py.test in test_check_data_of_all_contacts_on_home_page" />
+        <item index="1" class="java.lang.String" itemvalue="Python.check_db_connection" />
+        <item index="2" class="java.lang.String" itemvalue="Python tests.py.test in test_modify_group.py" />
+        <item index="3" class="java.lang.String" itemvalue="Python tests.py.test in test_delete_group.py" />
+        <item index="4" class="java.lang.String" itemvalue="Python tests.py.test in test_add_group.py" />
       </list>
     </recent_temporary>
   </component>
@@ -608,8 +606,8 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="1" />
-    <editor active="false" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20833333" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -618,11 +616,11 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32952693" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.60032624" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.60032624" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.5709625" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5709625" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -901,13 +899,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/test_check_data_of_contacts.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="85" max-vertical-offset="595">
-          <caret line="8" column="42" selection-start-line="8" selection-start-column="42" selection-end-line="8" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test/test_db_matches_ui.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="204">
@@ -1061,16 +1052,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fixture/contact.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2693" max-vertical-offset="4301">
-          <caret line="103" column="0" selection-start-line="103" selection-start-column="0" selection-end-line="103" selection-end-column="0" />
-          <folding>
-            <element signature="e#20#53#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps/_pydev_execfile.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="156" max-vertical-offset="391">
@@ -1089,8 +1070,26 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/fixture/db.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3319149" vertical-offset="466" max-vertical-offset="850">
+        <state vertical-scroll-proportion="0.0" vertical-offset="466" max-vertical-offset="850">
           <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fixture/contact.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="3152" max-vertical-offset="4301">
+          <caret line="188" column="12" selection-start-line="188" selection-start-column="12" selection-end-line="195" selection-end-column="80" />
+          <folding>
+            <element signature="e#20#53#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/test_check_data_of_contacts.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5483871" vertical-offset="153" max-vertical-offset="561">
+          <caret line="18" column="4" selection-start-line="18" selection-start-column="4" selection-end-line="18" selection-end-column="48" />
           <folding />
         </state>
       </provider>
