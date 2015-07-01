@@ -34,11 +34,12 @@ def random_string_for_phones (prefix, maxlen):
 
 
 testdata = [Contact(firstname="", lastname="", company="", address="", homephone="", mobilephone="",
-                        workphone="", email_1="")] + [
+                        workphone="", secondaryphone="", email_1="", email_2="", email_3="")] + [
     Contact(firstname=random_string("firstname", 10), lastname=random_string("lastname", 10),
             company=random_string("company", 10), address=random_string("address", 30),
             homephone=random_string_for_phones("homephone", 20), mobilephone=random_string_for_phones("mobilephone", 20),
-            workphone=random_string_for_phones("workphone", 20), email_1=random_string("email", 15))
+            workphone=random_string_for_phones("workphone", 20), secondaryphone=random_string_for_phones("secondaryphone", 20),
+            email_1=random_string("email", 15), email_2=random_string("email", 15) ,email_3=random_string("email", 15))
     for i in range(n)
 ]
 

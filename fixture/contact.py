@@ -1,17 +1,20 @@
 __author__ = 'User'
 from model.contact import Contact
+import re
 
 
 
-def clean(contact):
-    return Contact(id=contact.id, firstname=contact.firstname.strip(),
-                   lastname=contact.lastname.strip(), address=contact.address.strip())
+
 
 
 class ContactHelper:
     
     def __init__(self, app):
         self.app = app
+
+    def clean(self, contact):
+        return Contact(id=contact.id, firstname=contact.firstname.strip(),
+                   lastname=contact.lastname.strip(), address=contact.address.strip())
 
     def open_home_page(self):
         wd = self.app.wd
@@ -36,10 +39,23 @@ class ContactHelper:
         wd = self.app.wd
         wd.find_elements_by_name("selected[]")[index].click()
 
+    def select_contact_by_id(self, id):
+        wd = self.app.wd
+        wd.find_element_by_css_selector("input[value='%s']" % id).click()
+
     def delete_contact_by_index(self, index):
         wd = self.app.wd
         self.open_home_page()
         self.select_contact_by_index(index)
+        # submit deletion
+        wd.find_element_by_xpath("//input[@value='Delete']").click()
+        wd.switch_to_alert().accept()
+        self.contact_cash = None
+
+    def delete_contact_by_id(self, id):
+        wd = self.app.wd
+        self.open_home_page()
+        self.select_contact_by_id(id)
         # submit deletion
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         wd.switch_to_alert().accept()
@@ -55,16 +71,31 @@ class ContactHelper:
         cell = row.find_elements_by_tag_name("td")[7]
         cell.find_element_by_tag_name("a").click()
 
-    def open_contact_view_by_index(self, index):
+    def open_contact_to_edit_by_id(self, id):
         wd = self.app.wd
         self.open_home_page()
-        row = wd.find_elements_by_name("entry")[index]
-        cell = row.find_elements_by_tag_name("td")[6]
-        cell.find_element_by_tag_name("a").click()
+        for row in wd.find_elements_by_name("entry"):
+            if row.find_elements_by_tag_name("td")[0].find_element_by_tag_name("input").get_attribute("value") == id:
+                row.find_elements_by_tag_name("td")[7].find_element_by_tag_name("a").click()
+                break
+
+    #def open_contact_view_by_index(self, id):
+        #wd = self.app.wd
+        #self.open_home_page()
+        #for row in wd.find_elements_by_name("entry"):
+            #if row.find_elements_by_tag_name("td")[0].find_element_by_tag_name("input").get_attribute("value") == id:
+                #row.find_elements_by_tag_name("td")[6].find_element_by_tag_name("a").click()
 
     def delete_contact_edit_by_index(self, index):
         wd = self.app.wd
         self.open_contact_to_edit_by_index(index)
+        # submit deletion
+        wd.find_element_by_xpath("//input[@value='Delete']").click()
+        self.contact_cash = None
+
+    def delete_contact_edit_by_id(self, id):
+        wd = self.app.wd
+        self.open_contact_to_edit_by_id(id)
         # submit deletion
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         self.contact_cash = None
@@ -90,6 +121,9 @@ class ContactHelper:
         self.change_field_value("fax",contact.fax)
         self.change_field_value("homepage",contact.homepage)
         self.change_field_value("phone2",contact.secondaryphone)
+        self.change_field_value("email",contact.email_1)
+        self.change_field_value("email2",contact.email_2)
+        self.change_field_value("email3",contact.email_3)
 
     def modify_first_contact(self, new_contact_data):
         self.modify_contact_by_index(0, new_contact_data)
@@ -98,6 +132,14 @@ class ContactHelper:
         wd = self.app.wd
         self.open_contact_to_edit_by_index(index)
         self.fill_contact_form(new_contact_data)
+        # submit modification
+        wd.find_element_by_name("update").click()
+        self.contact_cash = None
+
+    def modify_contact_by_id(self, contact):
+        wd = self.app.wd
+        self.open_contact_to_edit_by_id(contact.id)
+        self.fill_contact_form(contact)
         # submit modification
         wd.find_element_by_name("update").click()
         self.contact_cash = None
@@ -126,35 +168,54 @@ class ContactHelper:
                                                  all_emails_from_home_page=all_emails, address=address))
         return list(self.contact_cash)
 
-    def compare_contact_lists(self, new_contacts, old_contacts):
-        wd = self.app.wd
-        old_contacts_without_space = list(map(clean, old_contacts))
-        new_contacts_without_space = list(map(clean, new_contacts))
-        assert sorted(old_contacts_without_space, key=Contact.id_or_max) == \
-               sorted(new_contacts_without_space, key=Contact.id_or_max)
+    def clear(self, s):
+        return re.sub("[() -]","",s)
 
-    def check_add_new_success(self, db, contact, old_contacts):
+    def merge_phones_like_on_home_page(self, contact):
+        return "\n".join(filter(lambda x: x != "",
+                            map(lambda s: self.clear(s),
+                                filter(lambda x: x is not None,
+                                       [contact.homephone, contact.mobilephone, contact.workphone, contact.secondaryphone]))))
+    def merge_emails_like_on_home_page(self, contact):
+        return "\n".join(filter(lambda x: x != "",
+                                filter(lambda x: x is not None,
+                                       [contact.email_1, contact.email_2, contact.email_3])))
+
+
+    def compare_contact_lists(self, new_contacts, old_contacts, check_ui):
+        wd = self.app.wd
+        assert sorted(old_contacts, key=Contact.id_or_max) == sorted(new_contacts, key=Contact.id_or_max)
+        if check_ui:
+            db_contacts = list(map(lambda contact: Contact(id=contact.id, firstname=contact.firstname, lastname=contact.lastname,
+                                        address=contact.address,
+                                        all_phones_from_home_page=self.merge_phones_like_on_home_page(contact),
+                                        homephone=None, workphone=None, mobilephone=None, secondaryphone=None,
+                                        all_emails_from_home_page=self.merge_emails_like_on_home_page(contact),
+                                        email_1=None, email_2=None, email_3=None), new_contacts))
+            assert sorted(list(map(self.clean, self.get_contact_list())), key=Contact.id_or_max) == \
+               sorted(list(map(self.clean, db_contacts)), key=Contact.id_or_max)
+
+    def check_add_new_success(self, db, contact, old_contacts, check_ui):
         wd = self.app.wd
         self.open_home_page()
         new_contacts = db.get_contact_list()
         old_contacts.append(contact)
-        self.compare_contact_lists(new_contacts, old_contacts)
+        self.compare_contact_lists(new_contacts, old_contacts, check_ui)
 
-    def check_delete_success(self, index, old_contacts):
+    def check_modify_contact_success(self, db, old_contacts, check_ui):
         wd = self.app.wd
         self.open_home_page()
-        assert len(old_contacts) - 1 == self.count()
-        new_contacts = self.get_contact_list()
-        old_contacts[index:index + 1] = []
-        assert sorted(old_contacts, key=Contact.id_or_max) == sorted(new_contacts, key=Contact.id_or_max)
+        new_contacts = db.get_contact_list()
+        self.compare_contact_lists(new_contacts, old_contacts, check_ui)
 
-    def check_modify_success(self, contact, index, old_contacts):
+    def check_delete_success(self, db, contact, old_contacts, check_ui):
         wd = self.app.wd
         self.open_home_page()
-        assert len(old_contacts) == self.count()
-        new_contacts = self.get_contact_list()
-        old_contacts[index].firstname = contact.firstname
-        assert sorted(old_contacts, key=Contact.id_or_max) == sorted(new_contacts, key=Contact.id_or_max)
+        new_contacts = db.get_contact_list()
+        old_contacts.remove(contact)
+        self.compare_contact_lists(new_contacts, old_contacts, check_ui)
+
+
 
     def get_contact_info_from_edit_page(self,index):
         wd = self.app.wd
