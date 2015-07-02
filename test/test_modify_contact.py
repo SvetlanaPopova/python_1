@@ -21,7 +21,7 @@ def test_modify_some_contact_firstname(app, db, check_ui):
 #def test_modify_first_contact_fax(app):
     #if app.contact.count() == 0:
         #app.contact.add_new(Contact(firstname="TestContact"))
-    #old_contacts = app.contact.get_contact_list()
+    #old_contacts = app.contact.get_contact_list_all()
     #contact = Contact(fax="77777")
     #contact.id = old_contacts[0].id
     #app.contact.modify_first_contact(contact)
@@ -31,7 +31,7 @@ def test_modify_some_contact_firstname(app, db, check_ui):
 #def test_modify_first_contact_all(app):
     #if app.contact.count() == 0:
         #app.contact.add_new(Contact(firstname="TestContact"))
-    #old_contacts = app.contact.get_contact_list()
+    #old_contacts = app.contact.get_contact_list_all()
     #contact = Contact(firstname="NewName", lastname="NewLastName", nickname="NewContact1",
                                            #title="NewTitle", company="NewCompany", address="-", homephone="1234",
                                            #mobilephone="4567",

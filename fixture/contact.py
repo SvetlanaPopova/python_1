@@ -14,7 +14,9 @@ class ContactHelper:
 
     def clean(self, contact):
         return Contact(id=contact.id, firstname=contact.firstname.strip(),
-                   lastname=contact.lastname.strip(), address=contact.address.strip())
+                   lastname=contact.lastname.strip(), address=contact.address.strip(),
+                   all_phones_from_home_page=contact.all_phones_from_home_page,
+                   all_emails_from_home_page=contact.all_emails_from_home_page)
 
     def open_home_page(self):
         wd = self.app.wd
@@ -152,9 +154,8 @@ class ContactHelper:
     contact_cash = None
 
     def get_contact_list(self):
+        wd = self.app.wd
         if self.contact_cash is None:
-            wd = self.app.wd
-            self.open_home_page()
             self.contact_cash = []
             for row in wd.find_elements_by_name("entry"):
                 cells = row.find_elements_by_tag_name("td")
@@ -164,9 +165,35 @@ class ContactHelper:
                 id = cells[0].find_element_by_tag_name("input").get_attribute("value")
                 all_emails = cells[4].text
                 all_phones = cells[5].text
-                self.contact_cash.append(Contact(firstname=firstname, lastname=lastname, id=id, all_phones_from_home_page=all_phones,
-                                                 all_emails_from_home_page=all_emails, address=address))
+                self.contact_cash.append(
+                    Contact(firstname=firstname, lastname=lastname, id=id, all_phones_from_home_page=all_phones,
+                            all_emails_from_home_page=all_emails, address=address))
         return list(self.contact_cash)
+
+    def get_contact_list_all(self):
+        wd = self.app.wd
+        #self.open_home_page()
+        self.contacts_filter_by_all()
+        return self.get_contact_list()
+
+    def contacts_filter_by_group(self, name):
+        wd = self.app.wd
+        self.open_home_page()
+        field = wd.find_element_by_name("group")
+        field.click()
+        for element in field.find_elements_by_tag_name("option"):
+            if element.text == name:
+                element.click()
+                break
+
+    def contacts_filter_by_all(self):
+        wd = self.app.wd
+        self.contacts_filter_by_group(name="[all]")
+
+    def get_contact_list_filter_group(self, group):
+        wd = self.app.wd
+        self.contacts_filter_by_group(group.name)
+        return self.get_contact_list()
 
     def clear(self, s):
         return re.sub("[() -]","",s)
@@ -192,7 +219,7 @@ class ContactHelper:
                                         homephone=None, workphone=None, mobilephone=None, secondaryphone=None,
                                         all_emails_from_home_page=self.merge_emails_like_on_home_page(contact),
                                         email_1=None, email_2=None, email_3=None), new_contacts))
-            assert sorted(list(map(self.clean, self.get_contact_list())), key=Contact.id_or_max) == \
+            assert sorted(list(map(self.clean, self.get_contact_list_all())), key=Contact.id_or_max) == \
                sorted(list(map(self.clean, db_contacts)), key=Contact.id_or_max)
 
     def check_add_new_success(self, db, contact, old_contacts, check_ui):
@@ -215,7 +242,17 @@ class ContactHelper:
         old_contacts.remove(contact)
         self.compare_contact_lists(new_contacts, old_contacts, check_ui)
 
-
+    def add_in_group(self, contact, group):
+        wd = self.app.wd
+        self.open_home_page()
+        self.select_contact_by_id(contact.id)
+        field = wd.find_element_by_name("to_group")
+        field.click()
+        for element in field.find_elements_by_tag_name("option"):
+            if element.text == group.name:
+                element.click()
+                break
+        wd.find_element_by_name("add").click()
 
     def get_contact_info_from_edit_page(self,index):
         wd = self.app.wd
