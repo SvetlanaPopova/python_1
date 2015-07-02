@@ -1,6 +1,7 @@
 __author__ = 'User'
 from model.contact import Contact
 import re
+from selenium.webdriver.support.ui import Select
 
 
 
@@ -179,12 +180,9 @@ class ContactHelper:
     def contacts_filter_by_group(self, name):
         wd = self.app.wd
         self.open_home_page()
-        field = wd.find_element_by_name("group")
-        field.click()
-        for element in field.find_elements_by_tag_name("option"):
-            if element.text == name:
-                element.click()
-                break
+        select = Select(wd.find_element_by_name("group"))
+        select.select_by_visible_text(name)
+        self.contact_cash = None
 
     def contacts_filter_by_all(self):
         wd = self.app.wd
@@ -246,13 +244,15 @@ class ContactHelper:
         wd = self.app.wd
         self.open_home_page()
         self.select_contact_by_id(contact.id)
-        field = wd.find_element_by_name("to_group")
-        field.click()
-        for element in field.find_elements_by_tag_name("option"):
-            if element.text == group.name:
-                element.click()
-                break
+        select = Select(wd.find_element_by_name("to_group"))
+        select.select_by_visible_text(group.name)
         wd.find_element_by_name("add").click()
+
+    def delete_from_group(self, contact, group):
+        wd = self.app.wd
+        self.contacts_filter_by_group(group.name)
+        self.select_contact_by_id(contact.id)
+        wd.find_element_by_name("remove").click()
 
     def get_contact_info_from_edit_page(self,index):
         wd = self.app.wd
