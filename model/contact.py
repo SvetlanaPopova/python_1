@@ -36,15 +36,15 @@ class Contact:
                and (self.firstname == other.firstname)\
                and (self.lastname == other.lastname)\
                and (self.address == other.address)\
-               and (self.homephone == other.homephone)\
-               and (self.mobilephone == other.mobilephone)\
-               and (self.workphone == other.workphone)\
-               and (self.secondaryphone == other.secondaryphone)\
-               and (self.all_phones_from_home_page == other.all_phones_from_home_page)\
-               and (self.email_1 == other.email_1)\
-               and (self.email_2 == other.email_2)\
-               and (self.email_3 == other.email_3)\
-               and (self.all_emails_from_home_page == other.all_emails_from_home_page)
+               #and (self.homephone == other.homephone)\
+               #and (self.mobilephone == other.mobilephone)\
+               #and (self.workphone == other.workphone)\
+               #and (self.secondaryphone == other.secondaryphone)\
+               #and (self.all_phones_from_home_page == other.all_phones_from_home_page)\
+               #and (self.email_1 == other.email_1)\
+               #and (self.email_2 == other.email_2)\
+               #and (self.email_3 == other.email_3)\
+              # and (self.all_emails_from_home_page == other.all_emails_from_home_page)
 
     def id_or_max(self):
         if self.id:
